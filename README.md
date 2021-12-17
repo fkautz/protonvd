@@ -42,7 +42,6 @@ Emitted JSON for this field is an `int32` instead of a `string`.
 ```json
 {
     "CVE_data_numberOfCVEs": 1,
-    // ...
 }
 ```
 
@@ -51,6 +50,5 @@ instead of
 ```json
 {
     "CVE_data_numberOfCVEs": "1",
-    // ...
 }
 ```
