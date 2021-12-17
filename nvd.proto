@@ -1,0 +1,137 @@
+syntax = "proto3";
+
+package protonvd;
+option go_package = "github.com/fkautz/protonvd";
+
+message NvdMessage {
+
+  message CveDataMeta {
+    string id = 1 [json_name = "ID"];
+    string assigner = 2 [json_name = "ASSIGNER"];
+  }
+
+  message ProblemTypeData {
+    repeated DescriptionData description = 1 [json_name = "description"];
+  }
+
+  message ProblemType {
+    repeated ProblemTypeData problem_type_data = 1 [json_name = "problemtype_data"];
+  }
+
+  message ReferenceData {
+    string url = 1 [json_name = "url"];
+    string name = 2 [json_name = "name"];
+    string ref_source = 3 [json_name = "refsource"];
+    repeated string tags = 4 [json_name = "tags"];
+  }
+
+  message References {
+    repeated ReferenceData reference_data = 1 [json_name = "reference_data"];
+  }
+
+  message DescriptionData {
+    string lang = 1 [json_name = "lang"];
+    string value = 2 [json_name = "value"];
+  }
+
+  message Description {
+    repeated DescriptionData description_data = 1 [json_name = "description_data"];
+  }
+
+  message Cve {
+    string data_type = 1 [json_name = "data_type"];
+    string data_format = 2 [json_name = "data_format"];
+    string data_version = 3 [json_name = "data_version"];
+    CveDataMeta cve_data_meta = 4 [json_name = "CVE_data_meta"];
+    ProblemType problem_type = 5 [json_name = "problemtype"];
+    References references = 6 [json_name = "references"];
+    Description description = 7 [json_name = "description"];
+  }
+
+  message CpeMatch {
+    bool vulnerable = 1 [json_name = "vulnerable"];
+    string cpe23Uri = 2 [json_name = "cpe23Uri"];
+    repeated string cpe_name = 3 [json_name = "cpe_name"];
+    string version_start_including = 4 [json_name = "versionStartIncluding"];
+    string version_start_excluding = 5 [json_name = "versionStartExcluding"];
+    string version_end_including = 6 [json_name = "versionEndIncluding"];
+    string version_end_excluding = 7 [json_name = "versionEndExcluding"];
+  }
+
+  message Nodes {
+    string operator = 1 [json_name = "operator"];
+    repeated Nodes children = 2 [json_name = "children"];
+    repeated CpeMatch cpe_match = 3 [json_name = "cpe_match"];
+    repeated string cpe_name = 4 [json_name = "cpe_name"];
+  }
+
+  message Configurations {
+    string cve_data_version = 1 [json_name = "CVE_data_version"];
+    repeated Nodes nodes = 2 [json_name = "nodes"];
+  }
+
+  message CvssV3 {
+    string version = 1 [json_name = "version"];
+    string vector_string = 2 [json_name = "vectorString"];
+    string attack_vector = 3 [json_name = "attackVector"];
+    string attack_complexity = 4 [json_name = "attackComplexity"];
+    string privileges_required = 5 [json_name = "privilegesRequired"];
+    string user_interaction = 6 [json_name = "userInteraction"];
+    string scope = 7 [json_name = "scope"];
+    string confidentiality_impact = 8 [json_name = "confidentialityImpact"];
+    string integrity_impact = 9 [json_name = "integrityImpact"];
+    string availability_impact = 10 [json_name = "availabilityImpact"];
+    double base_score = 11 [json_name = "baseScore"];
+    string base_severity = 12 [json_name = "baseSeverity"];
+  }
+
+  message BaseMetricV3 {
+    CvssV3 cvss_v3 = 1 [json_name = "cvssV3"];
+    double exploitability_score = 2 [json_name = "exploitabilityScore"];
+    double impact_score = 3 [json_name = "impactScore"];
+  }
+
+  message CvssV2 {
+    string version = 1 [json_name = "version"];
+    string version_string = 2 [json_name = "vectorString"];
+    string access_vector = 3 [json_name = "accessVector"];
+    string access_complexity = 4 [json_name = "accessComplexity"];
+    string authentication = 5 [json_name = "authentication"];
+    string confidentiality_impact = 6 [json_name = "confidentialityImpact"];
+    string integrity_impact = 7 [json_name = "integrityImpact"];
+    string availability_impact = 8 [json_name = "availabilityImpact"];
+    double base_score = 9 [json_name = "baseScore"];
+  }
+
+  message BaseMetricV2 {
+    CvssV2 cvss_v2 = 1 [json_name = "cvssV2"];
+    string severity = 2 [json_name = "severity"];
+    double exploitability_score = 3 [json_name = "exploitabilityScore"];
+    double impact_score = 4 [json_name = "impactScore"];
+    bool ac_insuf_info = 5 [json_name = "acInsufInfo"];
+    bool obtain_all_privilege = 6 [json_name = "obtainAllPrivilege"];
+    bool obtain_user_privilege = 7 [json_name = "obtainUserPrivilege"];
+    bool obtain_other_privilege = 8 [json_name = "obtainOtherPrivilege"];
+    bool user_interaction_required = 9 [json_name = "userInteractionRequired"];
+  }
+
+  message Impact {
+    BaseMetricV3 base_metric_v3 = 1 [json_name = "baseMetricV3"];
+    BaseMetricV2 base_metric_v2 = 2 [json_name = "baseMetricV2"];
+  }
+
+  message Cve_items {
+    Cve cve = 1 [json_name = "cve"];
+    Configurations configurations = 2 [json_name = "configurations"];
+    Impact impact = 3 [json_name = "impact"];
+    string published_date = 4 [json_name = "publishedDate"];
+    string last_modified_data = 5 [json_name = "lastModifiedDate"];
+  }
+
+  string cve_data_type = 1 [json_name = "CVE_data_type"];
+  string cve_data_format = 2 [json_name = "CVE_data_format"];
+  string cve_data_version = 3 [json_name = "CVE_data_version"];
+  int32 cve_data_number_of_cves = 4 [json_name = "CVE_data_numberOfCVEs"];
+  string cve_data_timestamp = 5 [json_name = "CVE_data_timestamp"];
+  repeated Cve_items cve_items = 6 [json_name = "CVE_Items"];
+}
