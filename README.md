@@ -36,7 +36,8 @@ jsonBytes, err := protojson.Marshal(msg)
 
 There is one minor departure from the spec.
 
-`//:root/CVE_data_numberOfCVEs` is an integer rather than a string. This results emitted results being:
+`//:root/CVE_data_numberOfCVEs` is an integer rather than a string.
+Emitted JSON for this field is an `int32` instead of a `string`.
 
 ```json
 {
