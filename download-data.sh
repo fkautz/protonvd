@@ -11,8 +11,7 @@ mkdir -p data/years
 
 cd data
 
-#i=2002
-i=2021
+i=2002
 end=$(date +"%Y")
 end=$(($end+1))
 while [ $i -ne $((end)) ]
